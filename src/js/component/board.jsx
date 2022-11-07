@@ -58,6 +58,16 @@ const Board = () =>{
         const tareasActualizadas = tareas.filter((tarea, i) => index!=i)
         setTareas(tareasActualizadas)
 
+        fetch('https://assets.breatheco.de/apis/fake/todos/user/carmelaria', {
+            method: 'PUT', 
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify([...tareas]),
+          })
+          .then(response =>response.json())
+          .then(result => console.log(result))
+        
     }
 
     /*const deleteElement = (i) =>{
