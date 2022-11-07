@@ -8,8 +8,21 @@ const Board = () =>{
 
     const[tareas, setTareas] = useState([]);
 
+    const getAllElements = () => {						//codigo obtenido de la aplicacion POSTMAN
+		var requestOptions = {
+			method: 'GET',
+			redirect: 'follow'
+		  };
+		  
+		  fetch("https://assets.breatheco.de/apis/fake/todos/user/carmelaria", requestOptions) //URL proiporcionada por crudcrud.com. Tieen límite de requests a 100
+			.then(response => response.json())
+			.then(result => setTareas(result))
+			.catch(error => console.log('error', error));
+	}
+
     useEffect(()=>{
         fetch('https://assets.breatheco.de/apis/fake/todos/user/carmelaria')
+        .then(getAllElements())
         .then(response => response.json())
         .then((result) => {
             if(result.msg == "This use does not exists, first call the POST method first to create the list for this username"){
@@ -24,7 +37,7 @@ const Board = () =>{
           .then(result => setTareas([]))
         }
         })
-    }, [tareas])
+    }, [])
 
     const agregarTarea = (tarea) =>{
         setTareas([...tareas, {"label": tarea, "done": false}])
@@ -44,7 +57,30 @@ const Board = () =>{
     const eliminarTarea = (index) => {
         const tareasActualizadas = tareas.filter((tarea, i) => index!=i)
         setTareas(tareasActualizadas)
+
     }
+
+    /*const deleteElement = (i) =>{
+        var myHeaders = new Headers();
+		myHeaders.append("Content-Type", "application/json");
+
+		var raw = JSON.stringify({
+  			"label": "egsgsr",
+  			"done": false
+		});
+
+		var requestOptions = {
+ 			method: 'DELETE',
+  			headers: myHeaders,
+  			body: raw,
+  			redirect: 'follow'
+		};
+
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/carmelaria"+i, requestOptions)
+		.then(response => response.json())
+		.then(result => getAllElements())
+		.catch(error => console.log('error', error));
+    }*/
 
     return (
         <div className="containerBoard">
